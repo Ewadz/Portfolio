@@ -17,7 +17,7 @@ export const projects = [
     type: "Desktop · Computer Vision",
     description:
       "A desktop application for identifying freshwater macroinvertebrates and supporting river ecosystem assessment.",
-    stack: ["Python", "PyQt6", "YOLOv11", "EfficientNetB7", "FastAPI"],
+    stack: ["Python", "PyQt6", "YOLOv11", "EfficientNetB7", "FastAPI", "PostgreSQL"],
     image: "/project-macroid.png",
     details:
       "MacroID combines image analysis, specimen identification, and assessment workflows into a desktop experience.",
@@ -49,7 +49,7 @@ export const projects = [
     name: "What'sForDinner",
     type: "iOS Application",
     description: "An iOS recipe discovery application using TheMealDB API.",
-    stack: ["Swift", "TheMealDB API"],
+    stack: ["Swift", "TheMealDB API", "Firebase"],
     image: "/project-dinner.png",
     details:
       "An iOS app that helps users browse recipe ideas and meal details.",
