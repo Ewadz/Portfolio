@@ -586,7 +586,7 @@ function App() {
               </div>
               <div className="cert-grid">
                 {certifications.filter((c) => c.featured).map((c, i) => (
-                  <div className="cert-card" key={c.short}>
+                  <div className="cert-card" key={c.name}>
                     <div className="cert-symbol">
                       <img
                         src={c.image}
@@ -609,7 +609,7 @@ function App() {
                       <h3>{c.name}</h3>
                       <p>{c.detail}</p>
                       <div className="cert-actions">
-                        <span className="cert-tag">{c.short}</span>
+                        <span className="cert-tag">Issued {c.issued}</span>
                           
                           {c.url && (
                           <a
@@ -703,7 +703,7 @@ function App() {
                     <div className="credential-group-title"><span>{category.toUpperCase()}</span><span>{String(certifications.filter(c => (c.category || "Other Certifications") === category).length).padStart(2,"0")}</span></div>
                     <div className="credential-grid">
                       {certifications.filter(c => (c.category || "Other Certifications") === category).map(c => (
-                        <article className="credential-card" key={c.short}>
+                        <article className="credential-card" key={c.name}>
                           <div className="credential-icon"><img src={c.image} alt={c.issuer + " badge"} loading="lazy" onError={e => {e.currentTarget.style.display="none";}} /></div>
                           <h3>{c.name}</h3><span className="credential-issuer">{c.issuer}</span><p>{c.detail}</p>
                           {c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer" className="credential-verify">VERIFY <ArrowUpRight size={13}/></a> : <span className="credential-issuer">Verification link not added</span>}

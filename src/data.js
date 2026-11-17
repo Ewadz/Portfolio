@@ -69,7 +69,7 @@ export const certifications = [
   {
     name: "Microsoft Certified: Security, Compliance, and Identity Fundamentals",
     category: "Cybersecurity & Security Fundamentals",
-    short: "SC-900",
+    issued: "July 2026",
     image: "/badges/microsoft-sc900.png",
     issuer: "Microsoft",
     detail: "Fundamentals of security, compliance, and identity.",
@@ -79,7 +79,7 @@ export const certifications = [
   {
     name: "Introduction to Cybersecurity",
     category: "Cybersecurity & Security Fundamentals",
-    short: "Cybersecurity",
+    issued: "July 2026",
     image: "/badges/cisco-cybersecurity.png",
     issuer: "Cisco Networking Academy",
     detail: "Foundational cybersecurity concepts and digital safety.",
@@ -89,7 +89,7 @@ export const certifications = [
   {
     name: "Software Testing Fundamentals and Methodologies",
     category: "Software Engineering",
-    short: "Software Testing",
+    issued: "October 2026",
     image: "/badges/STFM.png",
     issuer: "Microsoft via Coursera",
     detail: "Build a robust understanding of software quality assurance and the critical role testing plays within the Software Development Life Cycle (SDLC).",
@@ -98,7 +98,7 @@ export const certifications = [
   {
     name: "Software Engineering",
     category: "Software Engineering",
-    short: "Software Engineering",
+    issued: "April 2026",
     image: "/badges/SoftwareEngineering.png",
     issuer: "The Hong Kong University of Science and Technology via Coursera",
     detail: "Software Engineering skill and techniques being used in Software Development Life Cycle (SDLC).",
@@ -108,7 +108,7 @@ export const certifications = [
   {
     name: "Software Testing, Deployment, and Maintenance Strategies",
     category: "Software Engineering",
-    short: "Software Testing",
+    issued: "June 2026",
     image: "/badges/STDMS.png",
     issuer: "IBM via Coursera",
     detail: "End-to-end Testing and Release Management covering QA coordination, structured deployment checklists, and post-launch monitoring.",
@@ -118,7 +118,7 @@ export const certifications = [
     {
     name: "Software Engineering: Software Design and Project Management",
     category: "Software Engineering",
-    short: "Software Design and Project Management",
+    issued: "April 2026",
     image: "/badges/SDPM.png",
     issuer: "The Hong Kong University of Science and Technology via Coursera",
     detail: "Experienced in guiding applications through the full Software Development Life Cycle (SDLC), from initial project planning and systems analysis to architectural design.",
