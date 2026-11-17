@@ -608,17 +608,20 @@ function App() {
                       <div className="project-meta">{c.issuer}</div>
                       <h3>{c.name}</h3>
                       <p>{c.detail}</p>
-                      <span className="cert-tag">{c.short}</span>
-                      {c.url && (
-                        <a
-                          href={c.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-link"
-                        >
-                          View credential <ExternalLink size={14} />
-                        </a>
-                      )}
+                      <div className="cert-actions">
+                        <span className="cert-tag">{c.short}</span>
+                          
+                          {c.url && (
+                          <a
+                            href={c.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-link"
+                          >
+                            View credential <ExternalLink size={14} />
+                          </a>
+                        )}
+                      </div>  
                     </div>
                   </div>
                 ))}

@@ -1898,3 +1898,26 @@ footer button {
     font-size: 10px;
   }
 }
+/* Certification label and credential link */
+.cert-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cert-actions .cert-tag {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+}
+
+.cert-actions .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0;
+  white-space: nowrap;
+}
