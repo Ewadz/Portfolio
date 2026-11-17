@@ -125,6 +125,11 @@ function Wave() {
   }, []);
   return <canvas ref={ref} className="wave" aria-hidden="true" />;
 }
+function currentPage() {
+  const path = window.location.pathname.replace(/\/$/, "");
+  return path === "/projects" ? "projects" : path === "/certifications" ? "certifications" : "home";
+}
+
 function App() {
   const [dark, setDark] = useState(true),
     [mobile, setMobile] = useState(false),
@@ -142,7 +147,20 @@ function App() {
     [detail, setDetail] = useState(null),
     [termInput, setTermInput] = useState(""),
     [history, setHistory] = useState(["Type help to see available commands."]);
+  const [page, setPage] = useState(currentPage);
   const bottom = useRef(null);
+  useEffect(() => {
+    const onPopState = () => setPage(currentPage());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+  function openPage(next) {
+    window.history.pushState({}, "", next === "home" ? "/" : `/${next}`);
+    setPage(next);
+    setMobile(false);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
   }, [dark]);
@@ -168,11 +186,16 @@ function App() {
         }),
       { rootMargin: "-25% 0px -65% 0px" },
     );
-    document.querySelectorAll("section[id]").forEach((s) => obs.observe(s));
+    if (page === "home") document.querySelectorAll("section[id]").forEach((s) => obs.observe(s));
     return () => obs.disconnect();
-  }, []);
+  }, [page]);
   function go(id) {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    if (page !== "home") {
+      openPage("home");
+      window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 40);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    }
     setMobile(false);
   }
   function send(v) {
@@ -226,7 +249,7 @@ function App() {
             {nav.map(([id, label, Icon]) => (
               <button
                 key={id}
-                className={active === id ? "selected" : ""}
+                className={(page !== "home" ? page === id : active === id) ? "selected" : ""}
                 onClick={() => go(id)}
               >
                 <Icon size={17} />
@@ -279,6 +302,7 @@ function App() {
             </button>
           </header>
           <div className="main-inner">
+            {page === "home" ? (<>
             <section id="home" className="hero">           
           <div className="hero-portrait">
             <div className="portrait-frame portrait-hover">
@@ -388,9 +412,9 @@ function App() {
                     Things I've built<span className="dot">.</span>
                   </h2>
                 </div>
-                <span className="section-count">
-                  {String(projects.length).padStart(2, "0")} PROJECTS
-                </span>
+                <button className="view-all-link" onClick={() => openPage("projects")}>
+                  VIEW ALL PROJECTS <ArrowUpRight size={16} />
+                </button>
               </div>
               <div className="project-carousel-toolbar">
                 <span className="carousel-hint">
@@ -551,12 +575,17 @@ function App() {
               </p>
             </section>
             <section id="certifications" className="section">
-              <div className="section-label">// 04 — LEARNING</div>
-              <h2>
-                Certifications<span className="dot">.</span>
-              </h2>
+              <div className="section-top">
+                <div>
+                  <div className="section-label">// 04 — LEARNING</div>
+                  <h2>Certifications<span className="dot">.</span></h2>
+                </div>
+                <button className="view-all-link" onClick={() => openPage("certifications")}>
+                  VIEW ALL CERTIFICATIONS <ArrowUpRight size={16} />
+                </button>
+              </div>
               <div className="cert-grid">
-                {certifications.map((c, i) => (
+                {certifications.filter((c) => c.featured).map((c, i) => (
                   <div className="cert-card" key={c.short}>
                     <div className="cert-symbol">
                       <img
@@ -645,6 +674,43 @@ function App() {
               <span>EDUARD.PORTFOLIO / BUILT WITH CURIOSITY</span>
               <button onClick={() => go("home")}>BACK TO TOP ↑</button>
             </footer>
+            </>) : page === "projects" ? (
+              <div className="collection-page">
+                <button className="collection-back" onClick={() => go("projects")}><ArrowLeft size={17}/> BACK</button>
+                <div className="section-label">// WORK / ALL PROJECTS</div>
+                <h1>All projects<span className="dot">.</span></h1>
+                <p className="collection-intro">Student projects and applications I've worked on, from desktop systems to web and mobile apps.</p>
+                <div className="all-project-grid">
+                  {projects.map((p, i) => (
+                    <button className="project-card" key={p.id} onClick={() => setDetail(p)}>
+                      <div className="project-image"><img src={p.image} alt={p.name + " project screenshot"} loading="lazy"/><span className="project-open"><ArrowUpRight size={18}/></span></div>
+                      <div className="project-info"><div className="project-meta">{String(i + 1).padStart(2,"0")} / {p.type}</div><h3>{p.name}</h3><p>{p.description}</p><div className="tags">{p.stack.map(t => <span key={t}>{t}</span>)}</div></div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="collection-page">
+                <button className="collection-back" onClick={() => go("certifications")}><ArrowLeft size={17}/> BACK </button>
+                <div className="section-label">// LEARNING / ALL CERTIFICATIONS</div>
+                <h1>Certifications<span className="dot">.</span></h1>
+                <p className="collection-intro">Credentials and completed learning programs, grouped by field. Select Verify to view the original credential.</p>
+                {[...new Set(certifications.map(c => c.category || "Other Certifications"))].map(category => (
+                  <section className="credential-group" key={category}>
+                    <div className="credential-group-title"><span>{category.toUpperCase()}</span><span>{String(certifications.filter(c => (c.category || "Other Certifications") === category).length).padStart(2,"0")}</span></div>
+                    <div className="credential-grid">
+                      {certifications.filter(c => (c.category || "Other Certifications") === category).map(c => (
+                        <article className="credential-card" key={c.short}>
+                          <div className="credential-icon"><img src={c.image} alt={c.issuer + " badge"} loading="lazy" onError={e => {e.currentTarget.style.display="none";}} /></div>
+                          <h3>{c.name}</h3><span className="credential-issuer">{c.issuer}</span><p>{c.detail}</p>
+                          {c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer" className="credential-verify">VERIFY <ArrowUpRight size={13}/></a> : <span className="credential-issuer">Verification link not added</span>}
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            )}
           </div>
         </main>
       </div>
