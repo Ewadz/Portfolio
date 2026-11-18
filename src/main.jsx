@@ -1036,7 +1036,7 @@ function App() {
             ) : (
               <button type="button" onClick={() => send("Tour me through the portfolio")}>Take a tour</button>
             )}
-            {["Show projects", "What are your skills?", "Certifications"].map(
+            {["Show projects", "What are your skills?", "Certifications", "Achievements"].map(
               (q) => (
                 <button key={q} onClick={() => send(q)}>
                   {q}
