@@ -381,12 +381,18 @@ main {
   right: 6%;
 }
 
-.portrait-caption {
+/* HELLO WORLD — centered below the portrait on desktop and mobile */
+.hero-portrait .portrait-caption {
   position: absolute;
-  left: 12%;
-  bottom: 12px;
-  z-index: 3;
-  white-space: nowrap;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  transform: none;
 }
 
 .hero-copy {
@@ -1195,9 +1201,6 @@ footer button {
     inset: 35px 8% 45px;
   }
 
-  .portrait-caption {
-    bottom: 8px;
-  }
 
   .hero-copy {
     padding: 0;
@@ -1920,4 +1923,82 @@ footer button {
   width: fit-content;
   margin: 0;
   white-space: nowrap;
+}
+/* ECHO CHAT LAYOUT FIX */
+
+.echo-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  max-height: min(650px, calc(100dvh - 90px));
+}
+
+.echo-messages {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.echo-messages::-webkit-scrollbar {
+  display: none;
+}
+
+/* Quick suggestions */
+.echo-panel .suggestions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 14px;
+  overflow: visible;
+  min-width: 0;
+}
+
+.echo-panel .suggestions button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Chat input */
+.echo-input {
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.echo-input input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Bottom disclaimer */
+.echo-disclaimer {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .echo-panel {
+    max-height: calc(100dvh - 80px);
+  }
+
+  .echo-panel .suggestions {
+    padding: 8px 12px;
+    gap: 5px;
+  }
+
+  .echo-panel .suggestions button {
+    font-size: 11px;
+  }
+}
+.mobilebar-spacer {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 }
