@@ -2100,3 +2100,23 @@ footer button {
     display: none;
   }
 }
+/* Show certification descriptions on mobile */
+@media (max-width: 650px) {
+  .credential-card p {
+    display: block !important;
+    font-size: 10px;
+    line-height: 1.5;
+    margin: 10px 0 16px;
+    color: var(--muted);
+    overflow-wrap: break-word;
+  }
+
+  .credential-card {
+    height: auto;
+    min-height: 260px;
+  }
+
+  .credential-verify {
+    margin-top: auto;
+  }
+}
