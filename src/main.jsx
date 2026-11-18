@@ -34,7 +34,7 @@ import {
   TestTube2,
   LockKeyhole,
 } from "lucide-react";
-import { profile, projects, certifications, skills } from "./data";
+import { profile, projects, certifications, achievements, skills } from "./data";
 import "./style.css";
 const nav = [
   ["home", "Home", Home],
@@ -42,6 +42,7 @@ const nav = [
   ["projects", "Projects", FolderOpen],
   ["skills", "Skills", Layers],
   ["certifications", "Certifications", Award],
+  ["achievements", "Achievements", Award],
   ["contact", "Contact", Mail],
 ];
 // ECHO is a local portfolio assistant. Its answers are grounded in portfolio
@@ -81,8 +82,10 @@ function echoNavigationTarget(input) {
   if (!navigation) return null;
   if (/\b(all|full|entire)\s+(certifications?|certificates?|credentials?)\b|\b(certifications?|credentials?)\s+page\b/.test(q)) return { page: "certifications", label: "all certifications" };
   if (/\b(all|full|entire)\s+projects?\b|\bprojects?\s+page\b/.test(q)) return { page: "projects", label: "all projects" };
+  if (/\b(all|full|entire)\s+achievements?\b|\bachievements?\s+page\b/.test(q)) return { page: "achievements", label: "all achievements" };
   const targets = [
     { id: "certifications", label: "certifications", re: /\b(certifications?|certificates?|credentials?|badges?)\b/ },
+    { id: "achievements", label: "achievements", re: /\b(achievements?|awards?|honors?|recognition)\b/ },
     { id: "projects", label: "projects", re: /\b(projects?|portfolio work)\b/ },
     { id: "skills", label: "skills", re: /\b(skills?|toolbox|tech stack|technologies|frameworks?)\b/ },
     { id: "about", label: "about", re: /\b(about|bio|biography|background|education)\b/ },
@@ -107,6 +110,7 @@ function echoTourStops() {
     { id: "projects", title: "Projects", description: `Here are ${projects.length} projects featured in the portfolio: ${projects.map(p => p.name).join(", ")}. You can select any project to see its details and technologies.` },
     { id: "skills", title: "Skills & Interests", description: `This section shows his growing technical toolbox, including ${skills.map(s => s.title).join(", ")}. These are skills he has practiced or is still learning.` },
     { id: "certifications", title: "Certifications", description: `Here you'll find his certifications and completed learning programs. There are ${certifications.length} listed, and you can open the full certifications page to explore them.` },
+    { id: "achievements", title: "Achievements", description: `This section is for awards, recognition, competitions, and milestones. There are ${achievements.length} achievements currently listed.` },
     { id: "contact", title: "Contact", description: `Finally, this is where you can get in touch with Eduard for internships, opportunities, or collaborations using the contact links.` },
   ];
 }
@@ -119,12 +123,13 @@ function answer(q) {
   const all = has(/\b(all|list|every|what are|which are|show|overview)\b/);
   const projectIntent = has(/\b(projects?|apps?|applications?|built|build|developed|portfolio work)\b/);
   const certIntent = has(/\b(certifications?|certificates?|credentials?|badges?|courses?|coursera|issued|sc-900)\b/);
+  const achievementIntent = has(/\b(achievements?|awards?|honors?|recognition|milestones?)\b/);
   const skillIntent = has(/\b(skills?|technologies|technology|tools?|frameworks?|programming|languages?|tech stack|interests?)\b/);
   const bullets = (items) => items.map(item => `• ${item}`).join("\n");
   const section = (title, items, ending = "") => `${title}\n\n${bullets(items)}${ending ? `\n\n${ending}` : ""}`;
-  const scope = "Sorry, I can only help with questions about Eduard's portfolio, projects, skills, education, certifications, CV, and professional background. You can also ask me to navigate to a section.";
+  const scope = "Sorry, I can only help with questions about Eduard's portfolio, projects, skills, education, certifications, achievements, CV, and professional background. You can also ask me to navigate to a section.";
 
-  if (!question) return "Hi! I'm ECHO, Eduard's portfolio assistant. Ask about his projects, skills, education, or certifications—or ask me to take you to a section.";
+  if (!question) return "Hi! I'm ECHO, Eduard's portfolio assistant. Ask about his projects, skills, education, certifications, or achievements—or ask me to take you to a section.";
   if (/^(hi|hello|hey|hiya|howdy|greetings|good\s*morning|good\s*afternoon|good\s*evening|good\s*day|goodday|what'?s\s*up|whats\s*up|wassup)(\s+echo)?[!?.\s]*$/i.test(q.trim()) ||/^(echo[\s,]+)(hi|hello|hey|good\s*day|goodday|what'?s\s*up|whats\s*up)[!?.\s]*$/i.test(q.trim())) {
     return "Hello! 👋 I'm ECHO, Eduard's portfolio assistant. How are you today? How can I help you explore his work?";}
   if (/^(how are you|how r u|how's it going|how are things|are you okay)(\s+echo)?[!?.\s]*$/i.test(q.trim())) {
@@ -132,7 +137,12 @@ function answer(q) {
   if (has(/\b(thanks|thank you|thankyou|appreciate it)\b/))
     return "You're very welcome! 😊 Is there anything else you'd like to know about Eduard's portfolio?";
   if (has(/\b(who are you|what are you|are you ai|what can you do|help me|your name)\b/))
-    return section("I'm ECHO — Eduard's portfolio assistant.", ["Answer questions about projects, skills, certifications, and education", "Share professional background and public contact details", "Navigate to sections when you ask me to scroll or go somewhere"], "I'm a portfolio-focused assistant, not a general-purpose AI chatbot.");
+    return section("I'm ECHO — Eduard's portfolio assistant.", ["Answer questions about projects, skills, certifications, achievements, and education", "Share professional background and public contact details", "Navigate to sections when you ask me to scroll or go somewhere"], "I'm a portfolio-focused assistant, not a general-purpose AI chatbot.");
+  if (achievementIntent) {
+    if (!achievements.length) return "There are no achievements listed yet. This section is ready for awards, recognition, competitions, and milestones to be added.";
+    if (count) return `Eduard currently lists ${achievements.length} achievements.`;
+    return section(`Eduard's Achievements (${achievements.length})`, achievements.map(a => `${a.title} — ${a.organization}${a.date ? ` (${a.date})` : ""}${a.description ? `: ${a.description}` : ""}`));
+  }
   if (has(/\b(weather|forecast|temperature|sports?|football|basketball|stocks?|crypto|bitcoin|politics|election|president|joke|riddle|recipe for|cook|movie|celebrity|song|lyrics|capital of|math problem|solve this|homework)\b/)) return scope;
 
   if (has(/\b(address|phone|mobile number|telephone|where does he live|home location)\b/))
@@ -257,7 +267,7 @@ function Wave() {
 }
 function currentPage() {
   const path = window.location.pathname.replace(/\/$/, "");
-  return path === "/projects" ? "projects" : path === "/certifications" ? "certifications" : "home";
+  return path === "/projects" ? "projects" : path === "/certifications" ? "certifications" : path === "/achievements" ? "achievements" : "home";
 }
 
 function App() {
@@ -270,7 +280,7 @@ function App() {
     [chat, setChat] = useState([
       {
         who: "echo",
-        text: "Hey! I’m ECHO. Want to explore Eduard’s projects, skills, or certifications?",
+        text: "Hey! I’m ECHO. Want to explore Eduard’s projects, skills, certifications, or achievements?",
       },
     ]),
     [active, setActive] = useState("home"),
@@ -833,8 +843,40 @@ function App() {
                   A collection of credentials earned through continuous learning and professional development.
                 </p>
               </section>
+              <section id="achievements" className="section">
+                <div className="section-top">
+                  <div>
+                    <div className="section-label">// 05 — RECOGNITION</div>
+                    <h2>Achievements<span className="dot">.</span></h2>
+                  </div>
+                  <button className="view-all-link" onClick={() => openPage("achievements")}>
+                    VIEW ALL ACHIEVEMENTS <ArrowUpRight size={16} />
+                  </button>
+                </div>
+                {achievements.filter((a) => a.featured !== false).length ? (
+                  <div className="achievement-grid">
+                    {achievements.filter((a) => a.featured !== false).slice(0, 2).map((a) => (
+                      <article className="achievement-card" key={a.id || a.title}>
+                        {a.image ? <div className="achievement-image"><img src={a.image} alt={a.title} loading="lazy" /></div> : <div className="achievement-symbol"><Award size={30} /></div>}
+                        <div className="achievement-info">
+                          <div className="project-meta">{a.organization}</div>
+                          <h3>{a.title}</h3>
+                          {a.description && <p>{a.description}</p>}
+                          <div className="achievement-actions">
+                            {a.date && <span className="cert-tag">{a.date}</span>}
+                            {a.url && <a className="text-link" href={a.url} target="_blank" rel="noopener noreferrer">View achievement <ExternalLink size={14} /></a>}
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="section-intro">Awards, recognition, competitions, and milestones will appear here as they are added.</p>
+                )}
+                <p className="small-note">A collection of milestones and accomplishments throughout my academic and professional journey.</p>
+              </section>
               <section id="contact" className="section contact">
-                <div className="section-label">// 05 — CONTACT</div>
+                <div className="section-label">// 06 — CONTACT</div>
                 <h2>
                   Have something
                   <br />
@@ -895,7 +937,7 @@ function App() {
                   ))}
                 </div>
               </div>
-            ) : (
+            ) : page === "certifications" ? (
               <div className="collection-page">
                 <button className="collection-back" onClick={() => go("certifications")}><ArrowLeft size={17} /> BACK </button>
                 <div className="section-label">// LEARNING / ALL CERTIFICATIONS</div>
@@ -915,6 +957,40 @@ function App() {
                     </div>
                   </section>
                 ))}
+              </div>
+            ) : (
+              <div className="collection-page">
+                <button className="collection-back" onClick={() => go("achievements")}><ArrowLeft size={17} /> BACK</button>
+                <div className="section-label">// RECOGNITION / ALL ACHIEVEMENTS</div>
+                <h1>Achievements<span className="dot">.</span></h1>
+                <p className="collection-intro">Awards, recognition, competitions, and milestones from my academic and professional journey.</p>
+                {achievements.length ? (
+                  <>
+                    <div className="credential-group-title achievement-group-title">
+                      <span>ACHIEVEMENTS</span>
+                      <span>{String(achievements.length).padStart(2, "0")}</span>
+                    </div>
+                    <div className="credential-grid achievement-credential-grid">
+                      {achievements.map((a) => (
+                        <article className="credential-card achievement-credential-card" key={a.id || a.title}>
+                          <div className="credential-icon achievement-credential-icon">
+                            {a.image ? <img src={a.image} alt={a.title} loading="lazy" onError={e => { e.currentTarget.style.display = "none"; }} /> : <Award size={28} />}
+                          </div>
+                          <h3>{a.title}</h3>
+                          <span className="credential-issuer">{a.organization}</span>
+                          {a.description && <p>{a.description}</p>}
+                          {a.url ? <a href={a.url} target="_blank" rel="noopener noreferrer" className="credential-verify">Verify<ArrowUpRight size={13} /></a> : <span className="credential-issuer">Details link not added</span>}
+                        </article>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="achievement-empty">
+                    <Award size={34} />
+                    <h2>No achievements added yet<span className="dot">.</span></h2>
+                    <p>This page is ready for awards, recognition, competitions, and milestones. Add your entries to the achievements array in <code>src/data.js</code>.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

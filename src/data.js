@@ -1,3 +1,4 @@
+
 export const profile = {
   name: "Eduard A. Matubaran",
   title: "Computer Science · Software Engineering",
@@ -9,7 +10,9 @@ export const profile = {
   resume: "/resume.pdf",
   availability: "Open to opportunities",
 };
-// Projects appear in the same order as this array. Add your newest project at the top.
+
+// Projects appear in the same order as this array.
+// Add your newest project at the top.
 export const projects = [
   {
     id: "macroid",
@@ -65,6 +68,7 @@ export const projects = [
       "A student desktop project for seafood selling and buying workflows.",
   },
 ];
+
 export const certifications = [
   {
     name: "Microsoft Certified: Security, Compliance, and Identity Fundamentals",
@@ -115,7 +119,7 @@ export const certifications = [
     url: "https://coursera.org/share/9867018b882d0912cb0b6c2412c02168",
     featured: true,
   },
-    {
+  {
     name: "Software Engineering: Software Design and Project Management",
     category: "Software Engineering",
     issued: "April 2026",
@@ -125,6 +129,33 @@ export const certifications = [
     url: "https://coursera.org/share/39127be992cd4565216daec34809e5c8",
   },
 ];
+
+// Achievements are separate from certifications.
+// Add actual awards, recognition, competitions, or milestones here.
+export const achievements = [
+  {
+  id: "achievement-1",
+  title: "OpeniT Bootcamp",
+  organization: "OpeniT",
+  date: "May 2026",
+  description: "Top performer in the Applied Full Stack and Data Science Bootcamp 2026: Data Science track.",
+  image: "/achievements/achievement-1.png",
+  url: "https://credsverse.com/credentials/534c1f61-1515-4c22-8af3-9418be9b59fa?preview=1",
+  featured: true,
+  },
+  {
+  id: "achievement-2",
+  title: "Academic Scholar",
+  organization: "MSEUF",
+  date: "August 2026",
+  description: "Qualified to Academic Scholarship - College Grant for First Semester A.Y.2026-2027 with a grade point average of 1.41",
+  image: "/achievements/achievement-2.png",
+  url: "https://kommodo.ai/i/wYS0Oz88DT2ixQ8DJoGi",
+  featured: true,
+  },
+
+];
+
 export const skills = [
   {
     title: "Development",
